@@ -33,7 +33,7 @@ func main() {
 	protected.POST("/items", handler.createItemHandler)
 	protected.DELETE("/items/:id", handler.deleteItemHandler)
 
-	r.Run()
+	r.Run(":8000")
 }
 
 type Handler struct {
