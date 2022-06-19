@@ -1,24 +1,16 @@
 package main
 
 import (
-	"GolangPGPenShop/models"
-	"github.com/astaxie/beego/orm"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-var ORM orm.Ormer
-
-func init() {
-	models.ConnectToDb()
-	ORM = models.GetOrmObject()
-}
-
-/*
 func main() {
-	router := gin.Default()
-	router.POST("/createUser", createUser)
-	router.GET("/readUsers", readUsers)
-	router.PUT("/updateUser", updateUser)
-	router.DELETE("/deleteUser", deleteUser)
-	router.Run(":8000")
+	r := gin.Default()
+
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"data": "hello world"})
+	})
+
+	r.Run()
 }
-*/
