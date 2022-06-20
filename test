@@ -1,7 +1,18 @@
+go run main.go
+
+/////////////////////////////////////
+postman!!!
+
+POST http://localhost:8080/items
+
 {
-  "id": "1",
-  "title": "testitem",
-  "Description": "testitem"
-  "Contact": "hy"
-  "Phone": "pep"
+    "title": "testpostman",
+    "description": "testpostman",
+    "Contact": "678"
 }
+
+/////////////////////////////////////
+
+GET http://localhost:8080/items
+
+/////////////////////////////////////
