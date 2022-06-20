@@ -1,7 +1,7 @@
 go run main.go
 
 /////////////////////////////////////
-postman!!!
+postman
 
 POST http://localhost:8080/items
 
@@ -16,3 +16,5 @@ POST http://localhost:8080/items
 GET http://localhost:8080/items
 
 /////////////////////////////////////
+
+GET http://localhost:8080/items/:id
