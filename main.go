@@ -3,6 +3,7 @@ package main
 import (
 	"GolangPGPenShop/controllers"
 	"GolangPGPenShop/models"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 
@@ -19,6 +20,9 @@ func main() {
 	r.GET("/items", controllers.FindItems)
 	r.POST("/items", controllers.CreateItemNew)
 	r.GET("/items/:id", controllers.FindItem)
+	r.GET("/admin", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
+	})
 
 	r.Run()
 }
