@@ -70,3 +70,17 @@ func UpdateItemNew(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": item})
 
 }
+
+// DELETE  /items/:id
+// Delete  item
+
+func DeleteItem(c *gin.Context) {
+	var item models.Item
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&item).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	models.DB.Delete(&item)
+	c.JSON(http.StatusOK, gin.H{"data": true})
+}

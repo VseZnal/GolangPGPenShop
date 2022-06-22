@@ -25,6 +25,7 @@ func main() {
 			"https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
 	})
 	r.PATCH("/items/:id", controllers.UpdateItemNew)
+	r.DELETE("/items/:id", controllers.DeleteItem)
 
 	r.Run()
 }
