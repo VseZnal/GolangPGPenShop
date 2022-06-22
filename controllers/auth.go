@@ -53,7 +53,7 @@ func Login(c *gin.Context) {
 
 func Register(c *gin.Context) {
 
-	var input models.User
+	var input models.RegisterInput
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

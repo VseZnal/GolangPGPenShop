@@ -17,23 +17,24 @@ func main() {
 	models.ConnectDatabase()
 
 	r.Use(cors.Default())
+	public := r.Group("/api")
 
-	r.GET("/items", controllers.FindItems)
-	r.POST("/items", controllers.CreateItemNew)
-	r.GET("/items/:id", controllers.FindItem)
-	r.GET("/admin", func(c *gin.Context) {
+	public.GET("/items", controllers.FindItems)
+	public.POST("/items", controllers.CreateItemNew)
+	public.GET("/items/:id", controllers.FindItem)
+	public.GET("/admin", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently,
 			"https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
 	})
-	r.PATCH("/items/:id", controllers.UpdateItemNew)
-	r.DELETE("/items/:id", controllers.DeleteItem)
+	public.PATCH("/items/:id", controllers.UpdateItemNew)
+	public.DELETE("/items/:id", controllers.DeleteItem)
 
-	r.POST("/register", controllers.Register)
-	r.POST("/login", controllers.Login)
+	public.POST("/register", controllers.Register)
+	public.POST("/login", controllers.Login)
 
-	protected := r.Group("/api")
+	protected := r.Group("/api/ad")
 	protected.Use(middlewares.JwtAuthMiddleware())
-	r.GET("/user", controllers.CurrentUser)
+	protected.GET("/user", controllers.CurrentUser)
 
 	r.Run()
 }

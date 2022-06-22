@@ -2,6 +2,9 @@ package models
 
 import (
 	"GolangPGPenShop/token"
+	"errors"
+	"github.com/jinzhu/gorm"
+
 	"golang.org/x/crypto/bcrypt"
 	"strings"
 
@@ -9,9 +12,9 @@ import (
 )
 
 type User struct {
-	ID       uint   `json:"id" gorm:"primary_key"`
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	gorm.Model
+	Username string `gorm:"size:255;not null;unique" json:"username"`
+	Password string `gorm:"size:255;not null;" json:"password"`
 }
 
 type LoginInput struct {
@@ -19,29 +22,27 @@ type LoginInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (u *User) SaveUser() (*User, error) {
-
-	var err error
-	err = DB.Create(&u).Error
-	if err != nil {
-		return &User{}, err
-	}
-	return u, nil
+type RegisterInput struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
-func (u *User) BeforeSave() error {
+func GetUserByID(uid uint) (User, error) {
 
-	//turn password into hash
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
+	var u User
+
+	if err := DB.First(&u, uid).Error; err != nil {
+		return u, errors.New("User not found!")
 	}
-	u.Password = string(hashedPassword)
 
-	//remove spaces in username
-	u.Username = html.EscapeString(strings.TrimSpace(u.Username))
+	u.PrepareGive()
 
-	return nil
+	return u, nil
+
+}
+
+func (u *User) PrepareGive() {
+	u.Password = ""
 }
 
 func VerifyPassword(password, hashedPassword string) error {
@@ -76,20 +77,28 @@ func LoginCheck(username string, password string) (string, error) {
 
 }
 
-func GetUserByID(uid uint) (User, error) {
+func (u *User) SaveUser() (*User, error) {
 
-	var u User
-
-	if err := DB.First(&u, uid).Error; err != nil {
-		return u, nil
+	var err error
+	err = DB.Create(&u).Error
+	if err != nil {
+		return &User{}, err
 	}
-
-	u.PrepareGive()
-
 	return u, nil
-
 }
 
-func (u *User) PrepareGive() {
-	u.Password = ""
+func (u *User) BeforeSave() error {
+
+	//turn password into hash
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashedPassword)
+
+	//remove spaces in username
+	u.Username = html.EscapeString(strings.TrimSpace(u.Username))
+
+	return nil
+
 }
