@@ -26,3 +26,24 @@ GET http://localhost:8080/admin
 /////////////////////////////////////
 
 PATCH http://localhost:8080/items/:id
+
+/////////////////////////////////////
+
+POST http://localhost:8080/register
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+/////////////////////////////////////
+
+POST http://localhost:8080/login
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+/////////////////////////////////////
+

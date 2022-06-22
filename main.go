@@ -2,6 +2,7 @@ package main
 
 import (
 	"GolangPGPenShop/controllers"
+	"GolangPGPenShop/middlewares"
 	"GolangPGPenShop/models"
 	"net/http"
 
@@ -26,6 +27,13 @@ func main() {
 	})
 	r.PATCH("/items/:id", controllers.UpdateItemNew)
 	r.DELETE("/items/:id", controllers.DeleteItem)
+
+	r.POST("/register", controllers.Register)
+	r.POST("/login", controllers.Login)
+
+	protected := r.Group("/api")
+	protected.Use(middlewares.JwtAuthMiddleware())
+	r.GET("/user", controllers.CurrentUser)
 
 	r.Run()
 }
