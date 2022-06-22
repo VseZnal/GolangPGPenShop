@@ -21,8 +21,10 @@ func main() {
 	r.POST("/items", controllers.CreateItemNew)
 	r.GET("/items/:id", controllers.FindItem)
 	r.GET("/admin", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
+		c.Redirect(http.StatusMovedPermanently,
+			"https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
 	})
+	r.PATCH("/items/:id", controllers.UpdateItemNew)
 
 	r.Run()
 }

@@ -48,3 +48,25 @@ func FindItem(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": item})
 }
+
+// PATCH /items/:id
+// Update item
+
+func UpdateItemNew(c *gin.Context) {
+	var item models.Item
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&item).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	var input models.UpdateItem
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	models.DB.Model(&item).Updates(input)
+
+	c.JSON(http.StatusOK, gin.H{"data": item})
+
+}

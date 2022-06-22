@@ -12,3 +12,9 @@ type CreateItem struct {
 	Description string `json:"description" binding:"required"`
 	Contact     string `json:"contact" binding:"required"`
 }
+
+type UpdateItem struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Contact     string `json:"contact"`
+}
