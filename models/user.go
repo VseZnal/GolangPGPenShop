@@ -52,25 +52,19 @@ func VerifyPassword(password, hashedPassword string) error {
 func LoginCheck(username string, password string) (string, error) {
 
 	var err error
-
 	u := User{}
-
 	err = DB.Model(User{}).Where("username = ?", username).Take(&u).Error
-
 	if err != nil {
 		return "", err
 	}
-
 	err = VerifyPassword(password, u.Password)
-
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return "", err
 	}
-
 	token, err := token.GenerateToken(u.ID)
 
 	if err != nil {
-		return "", err
+		return "token", err
 	}
 
 	return token, nil
