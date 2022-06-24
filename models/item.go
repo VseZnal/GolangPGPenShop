@@ -7,7 +7,6 @@ type Item struct {
 	Title       string `json:"title"`
 	Description string `json:"Description"`
 	Contact     string `json:"Contact"`
-	//	Creator     User   `json:"foreignKey:Id"`
 }
 
 type CreateItem struct {

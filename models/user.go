@@ -4,11 +4,9 @@ import (
 	"GolangPGPenShop/token"
 	"errors"
 	"github.com/jinzhu/gorm"
-
 	"golang.org/x/crypto/bcrypt"
-	"strings"
-
 	"html"
+	"strings"
 )
 
 type User struct {
@@ -25,20 +23,6 @@ type LoginInput struct {
 type RegisterInput struct {
 	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
-}
-
-func GetUserByID(uid uint) (User, error) {
-
-	var u User
-
-	if err := DB.First(&u, uid).Error; err != nil {
-		return u, errors.New("User not found!")
-	}
-
-	u.PrepareGive()
-
-	return u, nil
-
 }
 
 func (u *User) PrepareGive() {
@@ -64,7 +48,7 @@ func LoginCheck(username string, password string) (string, error) {
 	token, err := token.GenerateToken(u.ID)
 
 	if err != nil {
-		return "token", err
+		return "", err
 	}
 
 	return token, nil
@@ -94,5 +78,19 @@ func (u *User) BeforeSave() error {
 	u.Username = html.EscapeString(strings.TrimSpace(u.Username))
 
 	return nil
+
+}
+
+func GetUserByID(uid uint) (User, error) {
+
+	var u User
+
+	if err := DB.First(&u, uid).Error; err != nil {
+		return u, errors.New("User not found!")
+	}
+
+	u.PrepareGive()
+
+	return u, nil
 
 }
