@@ -19,7 +19,6 @@ func main() {
 	r.Use(cors.Default())
 
 	public := r.Group("/api")
-
 	public.POST("/register", controllers.Register)
 	public.POST("/login", controllers.Login)
 	public.GET("/items", controllers.FindItems)
@@ -29,13 +28,12 @@ func main() {
 			"https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley")
 	})
 
-	protected := r.Group("/api/ad")
-	protected.Use(middlewares.JwtAuthMiddleware())
-
-	protected.PATCH("/items/:id", controllers.UpdateItemNew)
-	protected.DELETE("/items/:id", controllers.DeleteItem)
-	protected.POST("/items", controllers.CreateItemNew)
-	protected.GET("/user", controllers.CurrentUser)
+	authorized := r.Group("/api/ad")
+	authorized.Use(middlewares.JwtAuthMiddleware())
+	authorized.PATCH("/items/:id", controllers.UpdateItemNew)
+	authorized.DELETE("/items/:id", controllers.DeleteItem)
+	authorized.POST("/items", controllers.CreateItemNew)
+	authorized.GET("/user", controllers.CurrentUser)
 
 	r.Run()
 }
